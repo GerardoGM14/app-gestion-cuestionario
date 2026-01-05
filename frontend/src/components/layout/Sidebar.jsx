@@ -45,7 +45,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className={`flex flex-col h-screen bg-[#191A1A] text-gray-300 flex-shrink-0 transition-all duration-300 ${isCollapsed ? 'w-20 delay-150' : 'w-72'} relative`}>
+    <div className={`flex flex-col h-screen bg-[#191A1A] text-gray-300 flex-shrink-0 transition-all duration-300 ${isCollapsed ? 'w-16' : 'w-72'} relative`}>
       
       {/* Header (Full Width) */}
       <div className={`h-16 flex items-center ${isCollapsed ? 'justify-center' : 'justify-between px-4'} border-b border-gray-800 flex-shrink-0 relative`}>
@@ -59,7 +59,7 @@ const Sidebar = () => {
                  : 'h-10 w-auto object-contain'
              }`} 
            />
-           {!isCollapsed && <span className="text-gray-500 text-xs mt-1 ml-2 transition-opacity duration-300 whitespace-nowrap">V 1.0.0</span>}
+           <span className={`text-gray-500 text-xs mt-1 transition-all duration-300 whitespace-nowrap overflow-hidden ${isCollapsed ? 'opacity-0 max-w-0 ml-0' : 'opacity-100 max-w-[100px] ml-2'}`}>V 1.0.0</span>
         </div>
         
         <button 
@@ -72,7 +72,7 @@ const Sidebar = () => {
 
       <div className="flex flex-1 overflow-hidden relative">
         {/* Primary Sidebar (Icons Left) */}
-        <div className={`w-16 flex flex-col items-center py-4 bg-[#191A1A] border-r border-gray-800 z-20 overflow-y-auto ${isCollapsed ? 'w-full border-none' : ''}`}>
+        <div className={`w-16 flex flex-col items-center py-4 bg-[#191A1A] border-r border-gray-800 z-20 overflow-y-auto ${isCollapsed ? 'border-none' : ''}`}>
           
           {/* Main Navigation Icons */}
           <div className="flex flex-col gap-2 w-full px-2">
@@ -92,11 +92,10 @@ const Sidebar = () => {
       </div>
 
       {/* Secondary Sidebar (Menu Content) - Only visible when NOT collapsed */}
-      <div className={`flex-1 flex flex-col bg-[#191A1A] overflow-hidden transition-all duration-300 ${isCollapsed ? 'opacity-0 w-0' : 'opacity-100 w-auto'}`}>
-        {!isCollapsed && (
-        <>
+      <div className={`flex-1 flex flex-col bg-[#191A1A] overflow-hidden transition-all duration-300 ${isCollapsed ? 'opacity-0 -translate-x-4 pointer-events-none' : 'opacity-100 translate-x-0'}`}>
+        
         {/* Scrollable Menu Area */}
-        <div className="flex-1 overflow-y-auto py-6 px-4 custom-scrollbar pb-24">
+        <div className="flex-1 overflow-y-auto py-6 px-4 custom-scrollbar pb-24 min-w-[220px]">
           
           <h3 className="text-gray-500 font-semibold text-sm mb-4 px-2 tracking-wider">SEGURIDAD</h3>
 
@@ -163,8 +162,6 @@ const Sidebar = () => {
           </div>
 
         </div>
-        </>
-        )}
       </div>
 
         {/* Footer Storage Widget */}
