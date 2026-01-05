@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLoading } from '../context/LoadingContext';
 import { User, Lock, Eye, EyeOff, ChevronLeft, ChevronRight } from 'lucide-react';
 import logoBackground from '../assets/logo-background.svg';
 import tiktokLogo from '../assets/social/tiktok-logo.svg';
@@ -18,6 +19,7 @@ export default function Login() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+  const { showLoader, hideLoader } = useLoading();
   
   const slides = [
     {
@@ -45,26 +47,32 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    showLoader();
 
     try {
-      // Login Simulado (Local Storage)
-      if (email === 'admin@fastcloud.com' && password === 'admin123') {
-          // Guardar usuario en localStorage
-          const user = {
-            id: 1,
-            name: 'Administrador',
-            email: 'admin@fastcloud.com',
-            role: 'admin'
-          };
-          localStorage.setItem('user', JSON.stringify(user));
-          
-          navigate('/dashboard');
-      } else {
-        setError('Credenciales inválidas (Prueba: admin@fastcloud.com / admin123)');
-      }
+      // Simular delay de red
+      setTimeout(() => {
+        // Login Simulado (Local Storage)
+        if (email === 'admin@fastcloud.com' && password === 'admin123') {
+            // Guardar usuario en localStorage
+            const user = {
+              id: 1,
+              name: 'Administrador',
+              email: 'admin@fastcloud.com',
+              role: 'admin'
+            };
+            localStorage.setItem('user', JSON.stringify(user));
+            
+            navigate('/dashboard');
+        } else {
+          setError('Credenciales inválidas (Prueba: admin@fastcloud.com / admin123)');
+          hideLoader();
+        }
+      }, 1500);
     } catch (err) {
       console.error(err);
       setError('Ocurrió un error inesperado');
+      hideLoader();
     }
   };
 
@@ -77,8 +85,9 @@ export default function Login() {
   }, []);
 
   return (
-    <div className="min-h-screen lg:h-screen bg-white font-sans p-4 lg:p-8 flex overflow-hidden">
-      {/* Sección Izquierda - Slider de Imágenes */}
+    <div className="min-h-screen flex items-center justify-center bg-white font-sans overflow-hidden">
+      <div className="w-full h-screen lg:h-screen p-4 lg:p-8 flex" style={{ zoom: 0.9 }}>
+        {/* Sección Izquierda - Slider de Imágenes */}
       <div className="hidden lg:flex w-1/2 h-full relative bg-gray-900 overflow-hidden rounded-3xl">
         {slides.map((slide, index) => (
           <div 
@@ -131,7 +140,7 @@ export default function Login() {
                 alt="FastCloud Logo" 
                 className="h-24 md:h-28 w-auto object-contain mb-[-20px] md:mb-[-25px]" 
               />
-              <div className="text-[#383A3D] text-base md:text-lg mt-0 ml-4 font-medium tracking-wide relative -top-2">Gestión de Alta</div>
+              <div className="text-[#383A3D] qtext-base md:text-lg mt-0 ml-16 font-medium tracking-wide relative -top-2">Gestión de Alta de Clientes</div>
             </div>
           </div>
 
@@ -240,6 +249,7 @@ export default function Login() {
 
       {/* PlayStore Modal */}
       <PlayStoreModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      </div>
     </div>
   );
 }
