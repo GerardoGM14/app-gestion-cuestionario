@@ -3,14 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useLoading } from '../../context/LoadingContext';
 import { Building2, MapPin, Search, Bell, ChevronDown, User, Settings, Lock, HelpCircle, LogOut } from 'lucide-react';
 import ConfirmationModal from '../common/ConfirmationModal';
-import NotificationsSidebar from '../common/NotificationsSidebar';
 
 // Importamos la imagen local que subiste
 import logoutIllustration from '../../assets/modal/icono_logout.svg';
 
 const Topbar = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
@@ -84,16 +82,13 @@ const Topbar = () => {
 
       {/* Right Section: Actions */}
       <div className="flex items-center gap-5">
-        <button className="text-gray-500 hover:text-[#E17100] transition-colors p-1 cursor-pointer">
+        <button className="text-gray-500 hover:text-[#E17100] transition-colors p-1">
           <Search className="w-4 h-4 stroke-[2]" />
         </button>
-        <button 
-          onClick={() => setIsNotificationsOpen(true)}
-          className="text-gray-500 hover:text-[#E17100] transition-colors p-1 relative cursor-pointer"
-        >
+        <button className="text-gray-500 hover:text-[#E17100] transition-colors p-1 relative">
           <Bell className="w-4 h-4 stroke-[2]" />
-          {/* Notification Dot - Mocked to match 34 count roughly or just show active state */}
-          <span className="absolute top-0.5 right-1 w-2 h-2 bg-[#D32F2F] rounded-full border border-white"></span>
+          {/* Notification Dot - Optional based on image, but common */}
+          {/* <span className="absolute top-1 right-1.5 w-1.5 h-1.5 bg-red-500 rounded-full"></span> */}
         </button>
         
         {/* Avatar & Dropdown */}
@@ -163,12 +158,6 @@ const Topbar = () => {
         confirmText="Cerrar Sesión"
         cancelText="Cancelar"
         imageSrc={logoutIllustration}
-      />
-
-      {/* Notifications Sidebar */}
-      <NotificationsSidebar 
-        isOpen={isNotificationsOpen} 
-        onClose={() => setIsNotificationsOpen(false)} 
       />
     </div>
   );

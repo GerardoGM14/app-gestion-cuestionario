@@ -6,6 +6,7 @@ import Login from './components/Login'
 import Layout from './components/layout/Layout'
 import DashboardHome from './pages/DashboardHome'
 import MenuRol from './pages/MenuRol'
+import RegistroCompra from './pages/RegistroCompra'
 
 function App() {
   const location = useLocation();
@@ -31,6 +32,7 @@ function App() {
         <Route path="/dashboard" element={<Layout />}>
           <Route index element={<DashboardHome />} />
           <Route path="menu-rol" element={<MenuRol />} />
+          <Route path="registro-compra" element={<RegistroCompra />} />
           {/* Placeholder routes for other sidebar items */}
           <Route path="*" element={<div className="p-8">Página en construcción</div>} />
         </Route>

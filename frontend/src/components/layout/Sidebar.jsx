@@ -99,6 +99,52 @@ const Sidebar = () => {
           
           <h3 className="text-gray-500 font-semibold text-sm mb-4 px-2 tracking-wider">SEGURIDAD</h3>
 
+          {/* Gestión Group */}
+          <div className="mb-1">
+            <button 
+              onClick={() => toggleSubmenu('gestion')}
+              className="w-full flex items-center justify-between p-2 rounded-lg hover:bg-[#2D3748] text-gray-400 hover:text-gray-200 transition-colors mb-0.5"
+            >
+              <div className="flex items-center gap-2">
+                <BriefcaseBusiness className="w-4 h-4" />
+                <span className="font-medium text-sm">Gestión</span>
+              </div>
+              {openSubmenus.gestion ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
+            </button>
+            
+             {openSubmenus.gestion && (
+              <div className="pl-3 mt-0.5 space-y-0.5">
+                <Link to="/dashboard/registro-compra" className="flex items-center gap-2 p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors text-sm">
+                  <UserPlus className="w-3.5 h-3.5" />
+                  <span>Alta de Clientes</span>
+                </Link>
+              </div>
+             )}
+          </div>
+
+          {/* Procesos Group */}
+          <div className="mb-1">
+            <button 
+              onClick={() => toggleSubmenu('gestion')}
+              className="w-full flex items-center justify-between p-2 rounded-lg hover:bg-[#2D3748] text-gray-400 hover:text-gray-200 transition-colors mb-0.5"
+            >
+              <div className="flex items-center gap-2">
+                <BriefcaseBusiness className="w-4 h-4" />
+                <span className="font-medium text-sm">Gestión</span>
+              </div>
+              {openSubmenus.gestion ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
+            </button>
+            
+             {openSubmenus.gestion && (
+              <div className="pl-3 mt-0.5 space-y-0.5">
+                <Link to="/dashboard/registro-compra" className="flex items-center gap-2 p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors text-sm">
+                  <UserPlus className="w-3.5 h-3.5" />
+                  <span>Alta de Clientes</span>
+                </Link>
+              </div>
+             )}
+          </div>
+
           {/* Procesos Group */}
           <div className="mb-1">
             <button 
@@ -122,7 +168,7 @@ const Sidebar = () => {
                   <ShieldCheck className="w-3.5 h-3.5" />
                   <span>Permisos Usuarios</span>
                 </Link>
-                <Link to="/dashboard/menu-rol" className="flex items-center gap-2 p-1.5 rounded-lg bg-[#F2911C] text-white transition-colors text-sm">
+                <Link to="/dashboard/menu-rol" className="flex items-center gap-2 p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors text-sm">
                   <List className="w-3.5 h-3.5" />
                   <span>Menú por Rol</span>
                 </Link>
