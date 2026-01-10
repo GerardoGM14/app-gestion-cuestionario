@@ -16,7 +16,9 @@ import {
   Cloud, 
   HelpCircle,
   ChevronDown,
-  ChevronRight
+  ChevronRight,
+  UserPlus,
+  Store
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -25,7 +27,8 @@ const Sidebar = () => {
   const [activeMainTab, setActiveMainTab] = useState('security');
   const [openSubmenus, setOpenSubmenus] = useState({
     procesos: true,
-    maestros: false
+    maestros: false,
+    gestion: false
   });
   const location = useLocation();
 
@@ -114,32 +117,13 @@ const Sidebar = () => {
             
              {openSubmenus.gestion && (
               <div className="pl-3 mt-0.5 space-y-0.5">
-                <Link to="/dashboard/registro-compra" className="flex items-center gap-2 p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors text-sm">
+                <Link to="/dashboard/registro-compra" className={`flex items-center gap-2 p-1.5 rounded-lg transition-colors text-sm ${location.pathname === '/dashboard/registro-compra' ? 'bg-[#F2911C] text-white font-medium' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}>
                   <UserPlus className="w-3.5 h-3.5" />
                   <span>Alta de Clientes</span>
                 </Link>
-              </div>
-             )}
-          </div>
-
-          {/* Procesos Group */}
-          <div className="mb-1">
-            <button 
-              onClick={() => toggleSubmenu('gestion')}
-              className="w-full flex items-center justify-between p-2 rounded-lg hover:bg-[#2D3748] text-gray-400 hover:text-gray-200 transition-colors mb-0.5"
-            >
-              <div className="flex items-center gap-2">
-                <BriefcaseBusiness className="w-4 h-4" />
-                <span className="font-medium text-sm">Gestión</span>
-              </div>
-              {openSubmenus.gestion ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
-            </button>
-            
-             {openSubmenus.gestion && (
-              <div className="pl-3 mt-0.5 space-y-0.5">
-                <Link to="/dashboard/registro-compra" className="flex items-center gap-2 p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors text-sm">
-                  <UserPlus className="w-3.5 h-3.5" />
-                  <span>Alta de Clientes</span>
+                <Link to="/dashboard/lista-clientes" className={`flex items-center gap-2 p-1.5 rounded-lg transition-colors text-sm ${location.pathname === '/dashboard/lista-clientes' ? 'bg-[#F2911C] text-white font-medium' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}>
+                  <BriefcaseBusiness className="w-3.5 h-3.5" />
+                  <span>Clientes</span>
                 </Link>
               </div>
              )}
@@ -149,32 +133,32 @@ const Sidebar = () => {
           <div className="mb-1">
             <button 
               onClick={() => toggleSubmenu('procesos')}
-              className="w-full flex items-center justify-between p-2 rounded-lg bg-[#2D3748] text-gray-200 hover:bg-[#374151] transition-colors mb-0.5"
+              className="w-full flex items-center justify-between p-2 rounded-lg hover:bg-[#2D3748] text-gray-400 hover:text-gray-200 transition-colors mb-0.5"
             >
               <div className="flex items-center gap-2">
-                <Settings className="w-4 h-4 text-gray-400" />
+                <ShieldCheck className="w-4 h-4" />
                 <span className="font-medium text-sm">Procesos</span>
               </div>
               {openSubmenus.procesos ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
             </button>
-
+            
             {openSubmenus.procesos && (
               <div className="pl-3 mt-0.5 space-y-0.5">
-                <Link to="/dashboard/usuarios" className="flex items-center gap-2 p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors text-sm">
+                <Link to="/dashboard/usuarios" className={`flex items-center gap-2 p-1.5 rounded-lg transition-colors text-sm ${location.pathname === '/dashboard/usuarios' ? 'bg-[#F2911C] text-white font-medium' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}>
                   <Users className="w-3.5 h-3.5" />
                   <span>Usuarios</span>
                 </Link>
-                <Link to="/dashboard/permisos" className="flex items-center gap-2 p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors text-sm">
+                <Link to="/dashboard/permisos" className={`flex items-center gap-2 p-1.5 rounded-lg transition-colors text-sm ${location.pathname === '/dashboard/permisos' ? 'bg-[#F2911C] text-white font-medium' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}>
                   <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>Permisos Usuarios</span>
+                  <span>Permisos</span>
                 </Link>
-                <Link to="/dashboard/menu-rol" className="flex items-center gap-2 p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors text-sm">
+                <Link to="/dashboard/menu-rol" className={`flex items-center gap-2 p-1.5 rounded-lg transition-colors text-sm ${location.pathname === '/dashboard/menu-rol' ? 'bg-[#F2911C] text-white font-medium' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}>
                   <List className="w-3.5 h-3.5" />
                   <span>Menú por Rol</span>
                 </Link>
-                <Link to="/dashboard/configuracion" className="flex items-center gap-2 p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors text-sm">
-                  <Wrench className="w-3.5 h-3.5" />
-                  <span>Configuracion</span>
+                <Link to="/dashboard/configuracion" className={`flex items-center gap-2 p-1.5 rounded-lg transition-colors text-sm ${location.pathname === '/dashboard/configuracion' ? 'bg-[#F2911C] text-white font-medium' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}>
+                  <Settings className="w-3.5 h-3.5" />
+                  <span>Configuración</span>
                 </Link>
               </div>
             )}
@@ -193,51 +177,49 @@ const Sidebar = () => {
               {openSubmenus.maestros ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
             </button>
             
-             {openSubmenus.maestros && (
+            {openSubmenus.maestros && (
               <div className="pl-3 mt-0.5 space-y-0.5">
-                <Link to="/dashboard/sucursal" className="flex items-center gap-2 p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors text-sm">
-                  <MapPin className="w-3.5 h-3.5" />
-                  <span>Sucursal</span>
-                </Link>
-                 <Link to="/dashboard/roles" className="flex items-center gap-2 p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors text-sm">
-                  <ShieldCheck className="w-3.5 h-3.5" />
+                <Link to="/dashboard/roles" className={`flex items-center gap-2 p-1.5 rounded-lg transition-colors text-sm ${location.pathname === '/dashboard/roles' ? 'bg-[#F2911C] text-white font-medium' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}>
+                  <ShieldBan className="w-3.5 h-3.5" />
                   <span>Roles</span>
                 </Link>
+                <Link to="/dashboard/areas" className={`flex items-center gap-2 p-1.5 rounded-lg transition-colors text-sm ${location.pathname === '/dashboard/areas' ? 'bg-[#F2911C] text-white font-medium' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}>
+                  <MapPin className="w-3.5 h-3.5" />
+                  <span>Áreas</span>
+                </Link>
+                <Link to="/dashboard/sucursales" className={`flex items-center gap-2 p-1.5 rounded-lg transition-colors text-sm ${location.pathname === '/dashboard/sucursales' ? 'bg-[#F2911C] text-white font-medium' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}>
+                  <Store className="w-3.5 h-3.5" />
+                  <span>Sucursales</span>
+                </Link>
               </div>
-             )}
+            )}
           </div>
 
         </div>
-      </div>
-
-        {/* Footer Storage Widget */}
-        <div className="absolute bottom-0 left-0 w-full p-4 border-t border-gray-800 bg-[#191A1A] z-30 transition-all duration-300">
-            {/* Expanded Content */}
-            <div className={`transition-all duration-200 ${isCollapsed ? 'opacity-0 absolute inset-0 pointer-events-none' : 'opacity-100 relative'}`}>
-                <div className="flex items-center gap-2 text-gray-400 mb-1">
-                    <Cloud className="w-5 h-5" />
-                    <span className="font-medium text-sm">Almacenamiento</span>
-                </div>
-                
-                {/* Progress Bar */}
-                <div className="w-full h-1 bg-gray-700 rounded-full mb-1 overflow-hidden">
-                    <div className="h-full bg-[#E17100] rounded-full" style={{ width: '65%' }}></div>
-                </div>
-                
-                <p className="text-gray-500 text-xs mb-3">476 GB disponibles de 938 GB</p>
-                
-                <button className="w-full py-1.5 px-3 bg-[#2D3748] hover:bg-[#374151] text-white rounded-lg flex items-center justify-center gap-2 transition-colors border border-gray-700 text-sm font-medium">
-                    <HelpCircle className="w-4 h-4" />
-                    Más almacenamiento
-                </button>
-            </div>
-            
-            {/* Collapsed Storage Widget (Mini) */}
-            <div className={`flex flex-col items-center gap-3 transition-all duration-200 ${isCollapsed ? 'opacity-100 relative delay-200' : 'opacity-0 absolute inset-0 pointer-events-none'}`}>
-                 <Cloud className="w-5 h-5 text-gray-400" />
-            </div>
+        
         </div>
       </div>
+
+      {/* Storage Widget (Full Width Footer) */}
+      {!isCollapsed && (
+        <div className="p-4 border-t border-gray-800 bg-[#191A1A] flex-shrink-0">
+            <div className="flex items-center gap-2 mb-3 text-gray-300">
+                <Cloud size={18} />
+                <span className="text-sm font-medium">Almacenamiento</span>
+            </div>
+            
+            <div className="w-full bg-gray-700 rounded-full h-1.5 mb-2">
+                <div className="bg-[#F2911C] h-1.5 rounded-full" style={{ width: '50%' }}></div>
+            </div>
+            
+            <p className="text-xs text-gray-500 mb-4">476 GB disponibles de 938 GB</p>
+            
+            <button className="w-full py-2.5 px-3 bg-[#2D2D2D] hover:bg-[#383838] rounded-lg text-xs font-medium text-white flex items-center justify-center gap-2 transition-colors border border-gray-700">
+                <HelpCircle size={14} />
+                Más almacenamiento
+            </button>
+        </div>
+      )}
     </div>
   );
 };

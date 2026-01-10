@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const { getConnection, sql } = require('./db');
+const { db, sql } = require('./config/db');
+const clientsRoutes = require('./routes/clients');
 require('dotenv').config();
 
 const app = express();
@@ -10,9 +11,12 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// Rutas
+app.use('/api/clients', clientsRoutes);
+
 // Ruta de prueba
 app.get('/api/health', (req, res) => {
-    res.json({ status: 'OK', message: 'Backend funcionando correctamente' });
+    res.json({ status: 'OK', message: 'Backend funcionando correctamente', dbType: db.dbType });
 });
 
 // Endpoint de Login
@@ -24,18 +28,31 @@ app.post('/api/auth/login', async (req, res) => {
     }
 
     try {
-        const pool = await getConnection();
-        
-        // Consulta segura con parámetros
-        const result = await pool.request()
-            .input('email', sql.NVarChar, email)
-            .query('SELECT * FROM Usuarios WHERE Email = @email');
+        const pool = await db.connect();
+        let usuario = null;
 
-        if (result.recordset.length === 0) {
-            return res.status(401).json({ message: 'Credenciales inválidas' });
+        if (db.dbType === 'mssql') {
+            // Consulta segura con parámetros para SQL Server
+            const result = await pool.request()
+                .input('email', sql.NVarChar, email)
+                .query('SELECT * FROM Usuarios WHERE Email = @email');
+            
+            if (result.recordset.length > 0) {
+                usuario = result.recordset[0];
+            }
+
+        } else if (db.dbType === 'mysql') {
+            // Consulta segura con parámetros para MySQL
+            const [rows] = await pool.execute('SELECT * FROM Usuarios WHERE Email = ?', [email]);
+            
+            if (rows.length > 0) {
+                usuario = rows[0];
+            }
         }
 
-        const usuario = result.recordset[0];
+        if (!usuario) {
+            return res.status(401).json({ message: 'Credenciales inválidas' });
+        }
 
         // NOTA: En producción, aquí deberías comparar hashes de contraseñas con bcrypt
         // if (!bcrypt.compareSync(password, usuario.Password)) ...

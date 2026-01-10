@@ -1,11 +1,17 @@
-const { getConnection, sql } = require('./db');
+const { db } = require('../config/db');
 require('dotenv').config();
 
 async function seed() {
     try {
         console.log('Conectando a la base de datos...');
-        const pool = await getConnection();
+        const pool = await db.connect();
         
+        // Verificación simple de tipo de BD para advertir si se intenta correr en MySQL
+        if (db.dbType === 'mysql') {
+            console.warn('ADVERTENCIA: Este script de seed está optimizado para SQL Server. Puede fallar en MySQL.');
+            // En el futuro, aquí se debería implementar la lógica para MySQL
+        }
+
         console.log('Verificando tabla Usuarios...');
         // Crear tabla Usuarios si no existe
         const createTableQuery = `
