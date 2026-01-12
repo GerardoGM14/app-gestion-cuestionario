@@ -2,7 +2,7 @@ const { db, sql } = require('../config/db');
 
 const createClient = async (req, res) => {
     try {
-        const {
+        let {
             // Client fields
             tTipoDocumento, tNumeroDocumento, tRazonSocial, tRubro, tCategoria,
             tCanalCaptacion, tNivelPrioridad, tDireccionFiscal, tCiudad,
@@ -14,6 +14,12 @@ const createClient = async (req, res) => {
             iCostoMembresia, fInicioMembresia, fFinMembresia, lAplicaIGV,
             tObservaciones, tURLDocumentacion
         } = req.body;
+
+        // Handle file uploads
+        if (req.files && req.files.length > 0) {
+            const filePaths = req.files.map(file => file.path);
+            tURLDocumentacion = filePaths.join(';');
+        }
 
         const pool = await db.connect();
         let iMCliente = 0;

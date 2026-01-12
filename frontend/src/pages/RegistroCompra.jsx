@@ -11,7 +11,8 @@ import {
   Briefcase,
   CreditCard,
   Settings,
-  Link as LinkIcon
+  Link as LinkIcon,
+  X
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import DatePicker from '../components/ui/DatePicker';
@@ -20,6 +21,7 @@ const RegistroCompra = () => {
   const [activeTab, setActiveTab] = useState('info');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [files, setFiles] = useState([]);
   
   // Estado único para todo el formulario
   const [formData, setFormData] = useState({
@@ -97,6 +99,27 @@ const RegistroCompra = () => {
     }));
   };
 
+  const handleFileChange = (e) => {
+    if (e.target.files) {
+      // Convertir a array y combinar con archivos existentes si se desea, 
+      // o reemplazar completamente. Aquí reemplazamos para coincidir con el input.
+      // Si queremos acumular: setFiles(prev => [...prev, ...Array.from(e.target.files)]);
+      // Pero el input type="file" estándar reemplaza la selección. 
+      // Para permitir agregar más, mejor usamos un botón "Agregar" o gestionamos con un input oculto.
+      // Por simplicidad y UX común, permitiremos acumular archivos si el usuario selecciona de nuevo.
+      
+      const newFiles = Array.from(e.target.files);
+      setFiles(prev => [...prev, ...newFiles]);
+      
+      // Limpiar el input para permitir seleccionar el mismo archivo nuevamente si se borró
+      e.target.value = ''; 
+    }
+  };
+
+  const handleRemoveFile = (indexToRemove) => {
+    setFiles(prevFiles => prevFiles.filter((_, index) => index !== indexToRemove));
+  };
+
   const handleDateChange = (name, value) => {
     if (errors[name]) {
       setErrors(prev => ({
@@ -171,12 +194,21 @@ const RegistroCompra = () => {
         iCostoImplementacion: formData.iCostoImplementacion === '' ? 0 : Number(formData.iCostoImplementacion)
       };
 
+      const formDataToSend = new FormData();
+      
+      Object.keys(payload).forEach(key => {
+        if (key !== 'tURLDocumentacion') {
+             formDataToSend.append(key, payload[key]);
+        }
+      });
+      
+      files.forEach(file => {
+        formDataToSend.append('tURLDocumentacion', file);
+      });
+
       const response = await fetch('http://localhost:3000/api/clients', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
+        body: formDataToSend
       });
 
       if (response.ok) {
@@ -809,15 +841,38 @@ const RegistroCompra = () => {
                     </div>
                     
                     <div className="space-y-1">
-                        <label className="text-xs font-medium text-gray-500">Enlaces a Google Cloud Documentos</label>
+                        <label className="text-xs font-medium text-gray-500">Documentos Adjuntos</label>
                         <input 
-                          type="url" 
-                          name="tURLDocumentacion"
-                          value={formData.tURLDocumentacion}
-                          onChange={handleChange}
-                          placeholder="https://docs.google.com/..."
-                          className="w-full h-10 px-3 py-2 bg-white border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-orange-500"
+                          type="file" 
+                          onChange={handleFileChange}
+                          multiple
+                          className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer"
                         />
+                        {files.length > 0 && (
+                            <div className="mt-3 grid grid-cols-1 gap-2">
+                                {files.map((file, index) => (
+                                    <div key={index} className="flex items-center justify-between p-2 bg-gray-50 border border-gray-100 rounded-md group hover:bg-gray-100 transition-colors">
+                                        <div className="flex items-center gap-2 overflow-hidden">
+                                            <div className="p-1.5 bg-white rounded-md border border-gray-200">
+                                                <FileText size={16} className="text-orange-500" />
+                                            </div>
+                                            <div className="flex flex-col min-w-0">
+                                                <span className="text-sm font-medium text-gray-700 truncate">{file.name}</span>
+                                                <span className="text-xs text-gray-400">{(file.size / 1024).toFixed(1)} KB</span>
+                                            </div>
+                                        </div>
+                                        <button 
+                                            type="button"
+                                            onClick={() => handleRemoveFile(index)}
+                                            className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all"
+                                            title="Eliminar archivo"
+                                        >
+                                            <X size={16} />
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     <div className="space-y-1">
